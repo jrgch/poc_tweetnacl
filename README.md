@@ -77,6 +77,20 @@ cifrado).
       }
     * Salida: Datos descifrados y resultado de la validación de la firma.
 
+### Instrcciones para generación de llaves
+
+Los siguientes comandos fueron usados para la generación de las llaves requeridas para esta implementación.
+
+* Llaves para firma
+  ```
+  node -e "const kp = require('tweetnacl').sign.keyPair(); console.log('PRIVATE_SIGNING_KEY=' + Buffer.from(kp.secretKey).toString('base64')); console.log('PUBLIC_SIGNING_KEY=' + Buffer.from(kp.publicKey).toString('base64'));" > .env
+  ```
+
+* Llaves para cifrado
+  ```
+  node -e "const kp = require('tweetnacl').box.keyPair(); console.log('PRIVATE_ENCRYPTION_KEY=' + Buffer.from(kp.secretKey).toString('base64')); console.log('PUBLIC_ENCRYPTION_KEY=' + Buffer.from(kp.publicKey).toString('base64'));" >> .env
+  ```
+
 ## Conclusiones
 ### Flexibilidad y Modularidad
 TweetNaCl ofrece una implementación minimalista, lo que permite una integración modular en distintas partes de la aplicación sin dependencias innecesarias. Al separar las responsabilidades en ICryptoService y IKeyManagerService, la solución mantiene una arquitectura flexible que permite sustituir o extender la funcionalidad criptográfica sin afectar otras capas del sistema.
@@ -89,7 +103,7 @@ Al ser una librería de código abierto, TweetNaCl no implica costos de licencia
 ### Soporte y Comunidad Activa
 TweetNaCl es ampliamente adoptado en la comunidad de seguridad y cuenta con soporte en múltiples plataformas, incluyendo implementaciones en C, JavaScript y otros lenguajes. Aunque su desarrollo no es tan activo como el de Libsodium, sigue siendo una opción confiable con documentación clara y recursos suficientes para su implementación en proyectos de producción.
 
-## Instalaci+on de dependencias del proyecto
+## Instalación de dependencias del proyecto
 
 ```bash
 $ npm install
