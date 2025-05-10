@@ -1,6 +1,8 @@
 export interface IKeyManagerService {
-    getPrivateSigningKey(): Uint8Array;
-    getPublicSigningKey(): Uint8Array;
-    getPrivateEncryptionKey(): Uint8Array;
-    getPublicEncryptionKey(): Uint8Array;
+    getSigningPrivateKeyCloud(): Uint8Array;
+    getSigningPublicKeyCloud(): Uint8Array;
+    getEncryptionPrivateKeyCloud(): Uint8Array;
+    getEncryptionPublicKeyCloud(): Uint8Array;
+    getEncryptionPrivateKeyClient(): Uint8Array;
+    getEncryptionPublicKeyClient(): Uint8Array;
 }

@@ -4,26 +4,35 @@ import * as util from 'tweetnacl-util';
 
 @Injectable()
 export class KeyManagerService implements IKeyManagerService {
-    //Clave privada de firma (solo usada para firmar licencias)
-    private readonly privateSigningKey: Uint8Array;
-    
-    //Clave pública de firma (usada para validar la firma)
-    private readonly publicSigningKey: Uint8Array;
-    
-    //Clave privada de cifrado (usada para descifrar licencias)
-    private readonly privateEncryptionKey: Uint8Array;
 
-    //Clave pública de cifrado (usada para cifrar licencias)
-    private readonly publicEncryptionKey: Uint8Array;
+    //Clave privada de firma (solamente usada por Doushi cloud para firmar licencias)
+    private readonly signingPrivateKeyCloud: Uint8Array;
+
+    //Clave pública de firma (usada por Doushi client para validar la firma)
+    private readonly signingPublicKeyCloud: Uint8Array;
+
+    //Clave privada de cifrado (usada por Doushi cloud para cifrar la clave simétrica)
+    private readonly encryptionPrivateKeyCloud: Uint8Array;
+
+    //Clave pública de cifrado (usada por Doushi client para verificar el origen al descifrar)
+    private readonly encryptionPublicKeyCloud: Uint8Array;
+
+    //Clave privada de cifrado (usada por Doushi Client para descifrar licencias)
+    private readonly encryptionPrivateKeyClient: Uint8Array;
+
+    //Clave pública de cifrado (usada por Doushi Cloud para cifrar licencias)
+    private readonly encryptionPublicKeyClient: Uint8Array;
 
     constructor() {
 
         //Validar que todas las variables de entorno estén definidas
         const envVariables = [
-            'PRIVATE_SIGNING_KEY',
-            'PUBLIC_SIGNING_KEY',
-            'PRIVATE_ENCRYPTION_KEY',
-            'PUBLIC_ENCRYPTION_KEY',
+            'SIGNINGPRIVATEKEY_CLOUD',
+            'SIGNINGPUBLICKEY_CLOUD',
+            'ENCRYPTION_PRIVATE_KEY_CLOUD',
+            'ENCRYPTION_PUBLIC_KEY_CLOUD',
+            'ENCRYPTIONPRIVATEKEY_CLIENT',
+            'ENCRYPTIONPUBLICKEY_CLIENT'
         ];
 
         envVariables.forEach((envVar) => {
@@ -32,25 +41,35 @@ export class KeyManagerService implements IKeyManagerService {
             }
         });
 
-        this.privateSigningKey = util.decodeBase64(process.env.PRIVATE_SIGNING_KEY!);
-        this.publicSigningKey = util.decodeBase64(process.env.PUBLIC_SIGNING_KEY!);
-        this.privateEncryptionKey = util.decodeBase64(process.env.PRIVATE_ENCRYPTION_KEY!);
-        this.publicEncryptionKey = util.decodeBase64(process.env.PUBLIC_ENCRYPTION_KEY!);
+        this.signingPrivateKeyCloud = util.decodeBase64(process.env.SIGNINGPRIVATEKEY_CLOUD!);
+        this.signingPublicKeyCloud = util.decodeBase64(process.env.SIGNINGPUBLICKEY_CLOUD!);
+        this.encryptionPrivateKeyCloud = util.decodeBase64(process.env.ENCRYPTION_PRIVATE_KEY_CLOUD!);
+        this.encryptionPublicKeyCloud = util.decodeBase64(process.env.ENCRYPTION_PUBLIC_KEY_CLOUD!);
+        this.encryptionPrivateKeyClient = util.decodeBase64(process.env.ENCRYPTIONPRIVATEKEY_CLIENT!);
+        this.encryptionPublicKeyClient = util.decodeBase64(process.env.ENCRYPTIONPUBLICKEY_CLIENT!);
     }
 
-    getPrivateSigningKey(): Uint8Array {
-        return this.privateSigningKey;
-    }
-    
-    getPublicSigningKey(): Uint8Array {
-        return this.publicSigningKey;
+    getSigningPrivateKeyCloud(): Uint8Array {
+        return this.signingPrivateKeyCloud;
     }
 
-    getPrivateEncryptionKey(): Uint8Array {
-        return this.privateEncryptionKey;
+    getSigningPublicKeyCloud(): Uint8Array {
+        return this.signingPublicKeyCloud;
     }
 
-    getPublicEncryptionKey(): Uint8Array {
-        return this.publicEncryptionKey;
+    getEncryptionPrivateKeyCloud(): Uint8Array {
+        return this.encryptionPrivateKeyCloud;
+    }
+
+    getEncryptionPublicKeyCloud(): Uint8Array {
+        return this.encryptionPublicKeyCloud;
+    }
+
+    getEncryptionPrivateKeyClient(): Uint8Array {
+        return this.encryptionPrivateKeyClient;
+    }
+
+    getEncryptionPublicKeyClient(): Uint8Array {
+        return this.encryptionPublicKeyClient;
     }
 }
