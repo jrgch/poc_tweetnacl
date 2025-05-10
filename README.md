@@ -51,7 +51,7 @@ El diseño del sistema se basa en dos interfaces clave y sus respectivas impleme
 
 ### Flujo del proceso de descifrado y validación de firma
 
-1. Convierte datos de Base64 a Uint8Array.
+1. El sistema cliente convierte datos de Base64 a Uint8Array.
 2. Extraer partes: Clave secreta aleatoria cifrada, nonce y datos cifrados.
 3. Descifrar la clave secreta cifrada con la llave privada para cifrado (llave privada para
 cifrado).
@@ -77,18 +77,22 @@ cifrado).
       }
     * Salida: Datos descifrados y resultado de la validación de la firma.
 
-### Instrcciones para generación de llaves
+### Instrucciones para generación de llaves
 
 Los siguientes comandos fueron usados para la generación de las llaves requeridas para esta implementación.
 
 * Llaves para firma
   ```
-  node -e "const kp = require('tweetnacl').sign.keyPair(); console.log('PRIVATE_SIGNING_KEY=' + Buffer.from(kp.secretKey).toString('base64')); console.log('PUBLIC_SIGNING_KEY=' + Buffer.from(kp.publicKey).toString('base64'));" > .env
+  node -e "const kp = require('tweetnacl').sign.keyPair(); console.log('SIGNINGPRIVATEKEY_CLOUD=' + Buffer.from(kp.secretKey).toString('base64')); console.log('SIGNINGPUBLICKEY_CLOUD=' + Buffer.from(kp.publicKey).toString('base64'));" >> .env
   ```
 
-* Llaves para cifrado
+* Llaves para cifrado sistema central
   ```
-  node -e "const kp = require('tweetnacl').box.keyPair(); console.log('PRIVATE_ENCRYPTION_KEY=' + Buffer.from(kp.secretKey).toString('base64')); console.log('PUBLIC_ENCRYPTION_KEY=' + Buffer.from(kp.publicKey).toString('base64'));" >> .env
+  node -e "const kp = require('tweetnacl').box.keyPair(); console.log('ENCRYPTION_PRIVATE_KEY_CLOUD=' + Buffer.from(kp.secretKey).toString('base64')); console.log('ENCRYPTION_PUBLIC_KEY_CLOUD=' + Buffer.from(kp.publicKey).toString('base64'));" >> .env
+  ```
+* Llaves para cifrado sistema cliente
+  ```
+  node -e "const kp = require('tweetnacl').box.keyPair(); console.log('ENCRYPTIONPRIVATEKEY_CLIENT=' + Buffer.from(kp.secretKey).toString('base64')); console.log('ENCRYPTIONPUBLICKEY_CLIENT=' + Buffer.from(kp.publicKey).toString('base64'));" >> .env
   ```
 
 ## Conclusiones
